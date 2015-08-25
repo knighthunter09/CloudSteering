@@ -2,6 +2,10 @@ package examples.android.com.cloudsteering;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,12 +58,21 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ValueAnimator skyAnimator = ObjectAnimator.ofArgb(
+                this.getActivity().findViewById(R.id.car_layout), "backgroundColor",
+                Color.rgb(0x66,0xcc,0xff),Color.rgb(0x00,0x66,0x99));
+        skyAnimator.setDuration(3000);
+        skyAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        skyAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        skyAnimator.setEvaluator(new ArgbEvaluator());
         ImageView wheel = (ImageView)this.getActivity().findViewById(R.id.wheel);
         animatorSet.setTarget(wheel);
 
         ImageView sun = (ImageView) this.getActivity().findViewById(R.id.sun);
         sunset.setTarget(sun);
 
+        skyAnimator.start();
         animatorSet.start();
         sunset.start();
     }
